@@ -5,8 +5,8 @@
 // BTS7960 ctrl Pin 8 (GND) to Arduino GND
 */
 
-#define DEBUG_EN 1 // set to 1 or 0
-#define TICK_MS 1000
+#define DEBUG_EN 0 // set to 1 or 0
+#define TICK_MS 50
 
 const int NUM_READINGS = 10;
 
@@ -14,7 +14,7 @@ const int NUM_READINGS = 10;
 #define THROTTLE_PIN  0
 
 // Digital pins
-#define SEL_PIN 12
+#define SEL_PIN 7
 
 // Wheel motor
 #define W_RPWM  3 // BTS7960 M1 Pin 1 (RPWM)
@@ -78,8 +78,7 @@ int convertAnalogThrottleToPercent(int val) {
 }
 
 void readThrottleInputs(int &userThrottleAnalogVal, int &userDirectionState) {
-  int userReverseDigitalVal = 0;
-  // int userReverseDigitalVal = digitalRead(SEL_PIN);
+  int userReverseDigitalVal = digitalRead(SEL_PIN);
   userThrottleAnalogVal = analogRead(THROTTLE_PIN);
 
   if (userReverseDigitalVal == LOW) {
@@ -140,7 +139,7 @@ int doDirectionConflictHandling(int userDirectionState) {
   }
 }
 
-void updateThrottle() {
+void update() {
   int userThrottleAnalogVal = 0;
   int userDirectionState = 0;
 
@@ -172,7 +171,7 @@ void setup() {
 
 void loop() {
 
-  updateThrottle();
+  update();
 
   delay(TICK_MS);
 }
